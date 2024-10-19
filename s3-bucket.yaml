@@ -1,0 +1,9 @@
+#CloudFormation
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "CloudFormation template for S3 Bucket"
+Resources:
+  S3Bucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: "louis-s3-bucket"

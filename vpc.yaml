@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "CloudFormation for VPC"
+Resources:
+  # My VPC
+  MYVPC:
+    Type: "AWS::EC2::VPC"
+    Properties:
+      CidrBlock: "172.16.0.0/16"
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: myVPC
+
+  # Public subnet in AZ1
+  PublicSubnet1A:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      VpcId: !Ref MYVPC
+      CidrBlock: "172.16.1.0/24"
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: PublicSubnet1A
+
+  # App Private subnet in AZ1
+  AppPrivateSubnet1A:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      VpcId: !Ref MYVPC
+      CidrBlock: "172.16.2.0/24"
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      Tags:
+        - Key: Name
+          Value: AppPrivateSubnet1A
+
+  # Data Private subnet in AZ1
+  DataPrivateSubnet1A:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      VpcId: !Ref MYVPC
+      CidrBlock: "172.16.3.0/24"
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      Tags:
+        - Key: Name
+          Value: DataPrivateSubnet1A
+
+  ############### Second Availability Zone #####################
+  # Public subnet in AZ2
+  PublicSubnet2B:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      VpcId: !Ref MYVPC
+      CidrBlock: "172.16.4.0/24"
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: PublicSubnet2B
+
+  # App Private subnet in AZ2
+  AppPrivateSubnet2B:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      VpcId: !Ref MYVPC
+      CidrBlock: "172.16.5.0/24"
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      Tags:
+        - Key: Name
+          Value: AppPrivateSubnet2B
+
+  # Data Private subnet in AZ2
+  DataPrivateSubnet2B:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      VpcId: !Ref MYVPC
+      CidrBlock: "172.16.6.0/24"
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      Tags:
+        - Key: Name
+          Value: DataPrivateSubnet2B
