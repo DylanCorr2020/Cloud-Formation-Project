@@ -107,7 +107,7 @@ Resources:
           Value: PublicRouteTable
 
   # Public Route (attach route to IGW)
-  #only create it if internet gatway is created 
+  #only create it if internet gatway is created
   PublicRoute:
     Type: "AWS::EC2::Route"
     DependsOn: AttachGateway
@@ -122,3 +122,29 @@ Resources:
     Properties:
       SubnetId: !Ref PublicSubnet1A
       RouteTableId: !Ref PublicRouteTable
+
+  #Bastion Host Ec2
+  BastionHost:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      InstanceType: t2.micro
+      KeyName: Bastion
+      ImageId: ami-00385a401487aefa4
+      SubnetId: !Ref PublicSubnet1A
+      SecurityGroupIds:
+        - !Ref BastionSG
+      Tags:
+        - Key: Name
+          Value: BastionHost
+
+  #Security Group
+  BastionSG:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: "Enable SSH access"
+      VpcId: !Ref MYVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: #Your ip address
